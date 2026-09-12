@@ -107,6 +107,18 @@
       {hanzi:"爱", pinyin:"ài", arti:"cinta"},
       {hanzi:"喜欢", pinyin:"xǐhuan", arti:"suka"},
       {hanzi:"学习", pinyin:"xuéxí", arti:"belajar"}
+    ]},
+    {id:"instrumen", label:"Alat Musik", badge:"乐", words:[
+      {hanzi:"古筝", pinyin:"gǔzhēng", arti:"kecapi Tiongkok (guzheng)"},
+      {hanzi:"二胡", pinyin:"èrhú", arti:"rebab dua senar (erhu)"},
+      {hanzi:"琵琶", pinyin:"pípá", arti:"pipa (semacam gitar Tiongkok)"},
+      {hanzi:"笛子", pinyin:"dízi", arti:"suling bambu"},
+      {hanzi:"古琴", pinyin:"gǔqín", arti:"kecapi tujuh senar (guqin)"},
+      {hanzi:"唢呐", pinyin:"suǒnà", arti:"terompet Tiongkok (suona)"},
+      {hanzi:"扬琴", pinyin:"yángqín", arti:"simbalon Tiongkok (yangqin)"},
+      {hanzi:"笙", pinyin:"shēng", arti:"alat musik tiup mulut (sheng)"},
+      {hanzi:"锣", pinyin:"luó", arti:"gong"},
+      {hanzi:"鼓", pinyin:"gǔ", arti:"genderang / drum"}
     ]}
   ];
 
@@ -195,14 +207,13 @@
 
   function line(ctx,x1,y1,x2,y2){ ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); }
 
-  function drawTianZiGe(ctx,w,h){
-    const pad = Math.min(w,h) * 0.09;
-    const size = Math.min(w,h) - pad*2;
-    const x0 = (w-size)/2, y0 = (h-size)/2, x1 = x0+size, y1 = y0+size, cx = (x0+x1)/2, cy = (y0+y1)/2;
+  function drawTianZiGeCell(ctx,x,y,size){
+    const pad = size * 0.08;
+    const x0 = x+pad, y0 = y+pad, s = size - pad*2, x1 = x0+s, y1 = y0+s, cx = (x0+x1)/2, cy = (y0+y1)/2;
     ctx.save();
     ctx.strokeStyle = "rgba(193,52,47,0.45)";
     ctx.lineWidth = 1.4;
-    ctx.strokeRect(x0,y0,size,size);
+    ctx.strokeRect(x0,y0,s,s);
     ctx.setLineDash([5,5]);
     line(ctx,x0,cy,x1,cy);
     line(ctx,cx,y0,cx,y1);
@@ -210,7 +221,25 @@
     line(ctx,x0,y0,x1,y1);
     line(ctx,x1,y0,x0,y1);
     ctx.restore();
-    return {x0,y0,size};
+  }
+
+  // A Hanzi "word" in our list can be 1-3 characters long (你好, 星期一, ...).
+  // HanziWriter only knows how to render ONE character per instance (its
+  // stroke data is fetched per single character), so a multi-character
+  // word needs one cell/instance per character, laid out side by side —
+  // this layout is shared by the grid drawing and by initHanziWriter() so
+  // the two stay visually aligned.
+  function computeHanziLayout(word){
+    const chars = word ? Array.from(word.hanzi) : [];
+    const n = Math.max(chars.length, 1);
+    const gap = Math.max(4, Math.round(Math.min(cssW,cssH) * 0.02));
+    const cellSize = n === 1
+      ? Math.max(Math.min(cssW,cssH) - 8, 40)
+      : Math.max(Math.floor(Math.min((cssW - gap*(n-1)) / n, cssH - 8)), 40);
+    const totalWidth = n*cellSize + (n-1)*gap;
+    const startX = (cssW - totalWidth) / 2;
+    const y0 = (cssH - cellSize) / 2;
+    return {chars, n, gap, cellSize, totalWidth, startX, y0};
   }
 
   function drawRuledLines(ctx,w,h){
@@ -240,7 +269,11 @@
     const word = currentWord();
     if(!word) return;
     if(state.mode === "hanzi"){
-      drawTianZiGe(guideCtx,cssW,cssH);
+      const layout = computeHanziLayout(word);
+      for(let i=0;i<layout.n;i++){
+        const x = layout.startX + i*(layout.cellSize+layout.gap);
+        drawTianZiGeCell(guideCtx, x, layout.y0, layout.cellSize);
+      }
     } else {
       drawRuledLines(guideCtx,cssW,cssH);
       if(state.showGuide){
@@ -357,9 +390,15 @@
      Replaces the old "draw whatever you want, nobody checks" behaviour for
      Hanzi mode: HanziWriter knows the real stroke data for each character,
      so it can validate stroke direction/position/order live, and can also
-     play back the correct writing animation on demand. */
-  let writer = null;
-  let writerKey = null; // "<hanzi>__<size>__<showGuide>" of what's currently mounted
+     play back the correct writing animation on demand.
+
+     IMPORTANT: HanziWriter only renders ONE character per instance — its
+     stroke data is fetched per single character (e.g. 我.json), not per
+     word. Many entries in our list are 2-3 character words (你好, 星期一,
+     ...), so each character in a word gets its own HanziWriter instance,
+     laid out side by side, and the quiz runs through them in order. */
+  let writers = []; // one HanziWriter instance per character of the current word
+  let writerKey = null; // "<hanzi>__<cssWxcssH>__<showGuide>" of what's currently mounted
   const quizFeedbackEl = document.getElementById("quizFeedback");
 
   // During an exam there is never an outline hint, regardless of what the
@@ -368,15 +407,14 @@
     return examState ? false : state.showGuide;
   }
 
-  // Decides whether the HanziWriter instance needs rebuilding: only when
+  // Decides whether the HanziWriter instances need rebuilding: only when
   // the word, board size, or guide setting actually differ from what's
   // currently mounted. Called on every render/resize so word navigation
-  // always swaps the character immediately.
+  // always swaps the character(s) immediately.
   function syncHanziWriter(){
     if(state.mode !== "hanzi") return;
     const word = currentWord();
-    const size = Math.max(Math.min(cssW,cssH) - 8, 40);
-    const key = word ? `${word.hanzi}__${size}__${effectiveShowGuide()}` : null;
+    const key = word ? `${word.hanzi}__${cssW}x${cssH}__${effectiveShowGuide()}` : null;
     if(key === writerKey) return;
     writerKey = key;
     initHanziWriter();
@@ -387,32 +425,38 @@
     quizFeedbackEl.classList.toggle("is-mistake", !!isMistake);
   }
 
-  function destroyWriter(){
-    if(writer){
+  function destroyWriters(){
+    if(writers.length){
       hanziTargetEl.innerHTML = "";
-      writer = null;
+      writers = [];
     }
   }
 
   function initHanziWriter(){
-    destroyWriter();
+    destroyWriters();
     const word = currentWord();
     setQuizFeedback("");
     if(!word || typeof HanziWriter === "undefined") return;
-    const size = Math.max(Math.min(cssW,cssH) - 8, 40);
+    const layout = computeHanziLayout(word);
+    hanziTargetEl.style.gap = layout.gap + "px";
     try{
-      writer = HanziWriter.create(hanziTargetEl, word.hanzi, {
-        width: size,
-        height: size,
-        padding: Math.round(size*0.1),
-        showCharacter: false,
-        showOutline: effectiveShowGuide(),
-        strokeAnimationSpeed: 1.1,
-        delayBetweenStrokes: 200,
-        strokeColor: INK_COLOR,
-        outlineColor: "rgba(36,26,17,0.22)",
-        drawingColor: INK_COLOR,
-        radicalColor: "#c1342f"
+      layout.chars.forEach(ch => {
+        const cell = document.createElement("div");
+        cell.className = "hanzi-cell";
+        hanziTargetEl.appendChild(cell);
+        writers.push(HanziWriter.create(cell, ch, {
+          width: layout.cellSize,
+          height: layout.cellSize,
+          padding: Math.round(layout.cellSize*0.1),
+          showCharacter: false,
+          showOutline: effectiveShowGuide(),
+          strokeAnimationSpeed: 1.1,
+          delayBetweenStrokes: 200,
+          strokeColor: INK_COLOR,
+          outlineColor: "rgba(36,26,17,0.22)",
+          drawingColor: INK_COLOR,
+          radicalColor: "#c1342f"
+        }));
       });
       startQuiz();
     }catch(err){
@@ -423,34 +467,56 @@
     }
   }
 
+  // Runs the quiz for each character in the word in sequence — writing
+  // the 2nd character only becomes active once the 1st is completed —
+  // and reports the combined mistake count for the whole word at the end.
   function startQuiz(){
-    if(!writer) return;
-    setQuizFeedback("Mulai menulis di dalam kotak.");
-    writer.quiz({
-      onMistake: function(strokeData){
-        setQuizFeedback(`Belum tepat, coba lagi (goresan ke-${strokeData.strokeNum+1}).`, true);
-      },
-      onCorrectStroke: function(strokeData){
-        const remaining = strokeData.strokesRemaining;
-        setQuizFeedback(remaining > 0 ? `Benar! ${remaining} goresan lagi.` : "Goresan terakhir benar!");
-      },
-      onComplete: function(summaryData){
-        const mistakes = summaryData && typeof summaryData.totalMistakes === "number" ? summaryData.totalMistakes : 0;
-        if(examState){
-          handleExamAnswerComplete(mistakes);
-        } else {
-          setQuizFeedback(mistakes === 0 ? "Sempurna, tanpa kesalahan!" : `Selesai dengan ${mistakes} kesalahan.`);
+    if(!writers.length) return;
+    let totalMistakes = 0;
+    const multi = writers.length > 1;
+
+    function runCell(i){
+      setQuizFeedback(multi ? `Tulis karakter ${i+1} dari ${writers.length}.` : "Mulai menulis di dalam kotak.");
+      writers[i].quiz({
+        onMistake: function(strokeData){
+          totalMistakes++;
+          setQuizFeedback(
+            multi
+              ? `Belum tepat (karakter ${i+1}, goresan ke-${strokeData.strokeNum+1}).`
+              : `Belum tepat, coba lagi (goresan ke-${strokeData.strokeNum+1}).`,
+            true
+          );
+        },
+        onCorrectStroke: function(strokeData){
+          const remaining = strokeData.strokesRemaining;
+          setQuizFeedback(remaining > 0 ? `Benar! ${remaining} goresan lagi.` : "Goresan terakhir benar!");
+        },
+        onComplete: function(){
+          if(i+1 < writers.length){
+            runCell(i+1);
+          } else if(examState){
+            handleExamAnswerComplete(totalMistakes);
+          } else {
+            setQuizFeedback(totalMistakes === 0 ? "Sempurna, tanpa kesalahan!" : `Selesai dengan ${totalMistakes} kesalahan.`);
+          }
         }
-      }
-    });
+      });
+    }
+    runCell(0);
   }
 
   document.getElementById("demoBtn").addEventListener("click", () => {
-    if(state.mode !== "hanzi" || !writer || examState) return;
+    if(state.mode !== "hanzi" || !writers.length || examState) return;
     setQuizFeedback("Memutar urutan goresan yang benar...");
-    writer.animateCharacter({
-      onComplete: () => startQuiz()
-    });
+    function playCell(i){
+      writers[i].animateCharacter({
+        onComplete: () => {
+          if(i+1 < writers.length) playCell(i+1);
+          else startQuiz();
+        }
+      });
+    }
+    playCell(0);
   });
 
   /* ================= Exam mode =================
@@ -558,11 +624,16 @@
     startExam(list);
   });
 
-  /* ================= Speech synthesis (with real availability check) =================
+  /* ================= Speech synthesis (permissive availability check) =================
      Checking `"speechSynthesis" in window` only proves the *API* exists —
-     it says nothing about whether a Mandarin voice is actually installed.
-     Voices also load asynchronously in most browsers, so we must wait for
-     the "voiceschanged" event before trusting getVoices(). */
+     it says nothing about whether a Mandarin voice is actually installed,
+     and on plenty of browsers (lots of Android WebViews, some mobile
+     Safari versions) getVoices() stays empty and "voiceschanged" never
+     fires at all, even though speech synthesis itself still works fine.
+     So: voice detection is used ONLY to show an informational warning —
+     never to disable the button. The button stays clickable whenever the
+     API exists, and speak() always attempts to play; if it genuinely
+     can't, the browser/OS will simply produce no sound. */
   let zhVoiceAvailable = false;
   const speakBtn = document.getElementById("speakBtn");
   const voiceWarningEl = document.getElementById("voiceWarning");
@@ -576,12 +647,12 @@
 
   function updateSpeakButtonState(){
     const supported = "speechSynthesis" in window;
-    speakBtn.disabled = !supported || !zhVoiceAvailable;
+    speakBtn.disabled = !supported;
     if(!supported){
-      speakBtn.title = "Fitur suara tidak didukung di perangkat ini";
+      speakBtn.title = "Fitur suara tidak didukung di perangkat/browser ini";
       voiceWarningEl.hidden = false;
     } else if(!zhVoiceAvailable){
-      speakBtn.title = "Voice Mandarin tidak ditemukan di perangkat ini";
+      speakBtn.title = "Coba dengarkan (voice Mandarin belum terdeteksi, tapi mungkin tetap bisa terdengar)";
       voiceWarningEl.hidden = false;
     } else {
       speakBtn.title = "Dengarkan pengucapan";
@@ -590,7 +661,7 @@
   }
 
   function speak(text){
-    if(!("speechSynthesis" in window) || !zhVoiceAvailable) return;
+    if(!("speechSynthesis" in window)) return;
     try{
       window.speechSynthesis.cancel();
       const utter = new SpeechSynthesisUtterance(text);
@@ -599,6 +670,7 @@
       if(zhVoice) utter.voice = zhVoice;
       utter.lang = zhVoice ? zhVoice.lang : "zh-CN";
       utter.rate = 0.85;
+      utter.onerror = function(ev){ console.error("Speech synthesis error", ev); };
       window.speechSynthesis.speak(utter);
     }catch(err){ console.error("Gagal memutar suara", err); }
   }
@@ -606,6 +678,15 @@
   if("speechSynthesis" in window){
     refreshVoices();
     window.speechSynthesis.addEventListener("voiceschanged", refreshVoices);
+    // Fallback for browsers that never fire "voiceschanged": poll a few
+    // times shortly after load so the warning banner still clears once
+    // voices actually do show up, without blocking the button meanwhile.
+    let pollCount = 0;
+    const voicePoll = setInterval(() => {
+      pollCount++;
+      refreshVoices();
+      if(zhVoiceAvailable || pollCount >= 10) clearInterval(voicePoll);
+    }, 500);
   } else {
     updateSpeakButtonState();
   }
@@ -614,6 +695,43 @@
     const word = currentWord();
     if(word) speak(word.hanzi);
   });
+
+  /* ================= Background music =================
+     "In the Temple Garden" by Aaron Kenny — from the YouTube Audio
+     Library under the standard "YouTube Audio Library License" (not the
+     Creative Commons/CC BY tier), which does not require attribution.
+     Loops for as long as the toggle is on. */
+  const bgMusic = document.getElementById("bgMusic");
+  let musicPlaying = false;
+
+  function updateMusicBtn(){
+    const btn = document.getElementById("musicToggleBtn");
+    if(!btn) return;
+    btn.classList.toggle("is-active", musicPlaying);
+    btn.setAttribute("aria-pressed", musicPlaying ? "true" : "false");
+    btn.title = musicPlaying ? "Matikan musik latar" : "Putar musik latar";
+  }
+
+  const musicToggleBtn = document.getElementById("musicToggleBtn");
+  if(musicToggleBtn && bgMusic){
+    bgMusic.volume = 0.5;
+    musicToggleBtn.addEventListener("click", () => {
+      if(musicPlaying){
+        bgMusic.pause();
+        musicPlaying = false;
+        updateMusicBtn();
+      } else {
+        bgMusic.play()
+          .then(() => { musicPlaying = true; updateMusicBtn(); })
+          .catch(err => console.error("Gagal memutar musik latar", err));
+      }
+    });
+    bgMusic.addEventListener("pause", () => { musicPlaying = false; updateMusicBtn(); });
+    bgMusic.addEventListener("playing", () => { musicPlaying = true; updateMusicBtn(); });
+  } else if(musicToggleBtn){
+    musicToggleBtn.disabled = true;
+    musicToggleBtn.title = "Musik latar tidak tersedia";
+  }
 
   /* ================= Rendering ================= */
   function render(){
@@ -665,6 +783,23 @@
 
     wrap.classList.toggle("mode-pinyin", state.mode === "pinyin");
     wrap.setAttribute("aria-label", `Papan latihan menulis ${state.mode === "hanzi" ? "karakter Han" : "pinyin"} untuk kata saat ini`);
+
+    // Multi-character Hanzi words (你好, 星期一, ...) get a wider board so
+    // each character's cell isn't squeezed too small; single characters
+    // and Pinyin mode keep the CSS-defined square/16:10 sizing.
+    if(state.mode === "hanzi" && word){
+      const n = Array.from(word.hanzi).length;
+      if(n > 1){
+        wrap.style.maxWidth = Math.min(170*n + 40, 520) + "px";
+        wrap.style.aspectRatio = `${n} / 1.05`;
+      } else {
+        wrap.style.maxWidth = "";
+        wrap.style.aspectRatio = "";
+      }
+    } else {
+      wrap.style.maxWidth = "";
+      wrap.style.aspectRatio = "";
+    }
 
     resizeCanvases();
   }

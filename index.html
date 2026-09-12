@@ -22,15 +22,24 @@
 <div class="container">
 
   <header class="site-header reveal">
-    <div class="brand">
-      <svg viewBox="0 0 40 40" aria-hidden="true">
-        <rect x="4" y="4" width="32" height="32" rx="6" fill="none" stroke="var(--accent)" stroke-width="2"></rect>
-        <path d="M13 21c2-5 4.5-7.5 6.5-7.5s3.2 3.3 1 7-0.8 6.5 2.4 6.5 5.4-3.2 6.1-7.5" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"></path>
-      </svg>
-      <h1 class="brand-title">
-        <span class="brand-cn">习字</span>
-        <span class="brand-id">Latihan Aksara Mandarin</span>
-      </h1>
+    <div class="header-top">
+      <div class="brand">
+        <svg viewBox="0 0 40 40" aria-hidden="true">
+          <rect x="4" y="4" width="32" height="32" rx="6" fill="none" stroke="var(--accent)" stroke-width="2"></rect>
+          <path d="M13 21c2-5 4.5-7.5 6.5-7.5s3.2 3.3 1 7-0.8 6.5 2.4 6.5 5.4-3.2 6.1-7.5" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+        <h1 class="brand-title">
+          <span class="brand-cn">习字</span>
+          <span class="brand-id">Latihan Aksara Mandarin</span>
+        </h1>
+      </div>
+      <button type="button" class="icon-btn music-btn" id="musicToggleBtn" aria-pressed="false" title="Putar musik latar (musik ambient, dibuat otomatis)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 18V5l12-2v13"></path>
+          <circle cx="6" cy="18" r="3"></circle>
+          <circle cx="18" cy="16" r="3"></circle>
+        </svg>
+      </button>
     </div>
     <p class="tagline">Lacak Hanzi di atas kisi 田字格 dengan validasi urutan goresan, atau tulis Pinyin di garis latihan — semua langsung dari layar sentuhmu, satu kata per satu.</p>
   </header>
@@ -150,11 +159,13 @@
     <p id="voiceWarning" class="voice-warning" hidden>Suara Mandarin (text-to-speech) tidak ditemukan di perangkat ini. Coba pasang paket bahasa Mandarin untuk text-to-speech di pengaturan perangkatmu.</p>
     <div class="footer-actions">
       <button type="button" class="ghost-sm" id="resetProgressBtn">Reset semua progres</button>
-      <p class="credit">85 kosakata dasar · disimpan otomatis di perangkatmu</p>
+      <p class="credit">95 kosakata dasar · disimpan otomatis di perangkatmu</p>
     </div>
   </footer>
 
 </div>
+
+<audio id="bgMusic" src="audio/in-the-temple-garden.mp3" preload="none" loop></audio>
 
 <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3/dist/hanzi-writer.min.js"></script>
 <script src="app.js"></script>
