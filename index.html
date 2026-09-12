@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>习字 · Latihan Aksara Mandarin</title>
+<meta name="description" content="Latihan menulis Hanzi dan Pinyin langsung di layar sentuh, lengkap dengan validasi urutan goresan.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg-decor" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="dots"></div>
+</div>
+<svg class="noise-overlay" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter>
+  <rect width="100%" height="100%" filter="url(#grain)"></rect>
+</svg>
+
+<div class="container">
+
+  <header class="site-header reveal">
+    <div class="brand">
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <rect x="4" y="4" width="32" height="32" rx="6" fill="none" stroke="var(--accent)" stroke-width="2"></rect>
+        <path d="M13 21c2-5 4.5-7.5 6.5-7.5s3.2 3.3 1 7-0.8 6.5 2.4 6.5 5.4-3.2 6.1-7.5" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <h1 class="brand-title">
+        <span class="brand-cn">习字</span>
+        <span class="brand-id">Latihan Aksara Mandarin</span>
+      </h1>
+    </div>
+    <p class="tagline">Lacak Hanzi di atas kisi 田字格 dengan validasi urutan goresan, atau tulis Pinyin di garis latihan — semua langsung dari layar sentuhmu, satu kata per satu.</p>
+  </header>
+
+  <nav class="category-rail reveal delay-1" id="categoryRail" aria-label="Pilih kategori kosakata"></nav>
+
+  <main>
+    <div class="mode-switch reveal delay-1">
+      <button type="button" class="mode-btn is-active" id="modeHanziBtn" aria-pressed="true">Tulis Hanzi</button>
+      <button type="button" class="mode-btn" id="modePinyinBtn" aria-pressed="false">Tulis Pinyin</button>
+    </div>
+
+    <div class="exam-bar reveal delay-1" id="examIdleBar">
+      <button type="button" class="btn exam-cta-btn" id="startExamBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 11l3 3L22 4"></path>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+        </svg>
+        Mulai Ujian (<span id="examCount">0</span> kata)
+      </button>
+    </div>
+
+    <div class="exam-status-bar" id="examStatusBar" hidden>
+      <span id="examProgressText">Soal 1 / 10</span>
+      <button type="button" class="ghost-sm" id="exitExamBtn">Keluar dari ujian</button>
+    </div>
+
+    <section class="practice-card reveal delay-2" aria-label="Papan latihan menulis">
+      <div class="prompt-row">
+        <div class="prompt-main">
+          <p id="promptHanzi" lang="zh-CN"></p>
+          <p id="promptPinyin"></p>
+          <p id="promptArti"></p>
+        </div>
+        <button type="button" class="icon-btn" id="speakBtn" aria-label="Dengarkan pengucapan">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" stroke="none"></path>
+            <path d="M16.3 8.7a5 5 0 0 1 0 6.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+            <path d="M19 6.2a8.5 8.5 0 0 1 0 11.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="canvas-wrap" id="canvasWrap" role="img" aria-label="Papan latihan menulis">
+        <canvas id="guideCanvas" aria-hidden="true"></canvas>
+        <canvas id="inkCanvas" aria-hidden="true"></canvas>
+        <div id="hanziWriterTarget" aria-hidden="true"></div>
+      </div>
+
+      <p id="quizFeedback" class="quiz-feedback" aria-live="polite"></p>
+
+      <div class="canvas-tools">
+        <button type="button" class="btn btn-dark" id="clearBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 12a8 8 0 1 1 2.6 5.9"></path>
+            <path d="M4 17v-5h5"></path>
+          </svg>
+          <span id="clearBtnLabel">Ulangi</span>
+        </button>
+
+        <button type="button" class="btn btn-dark" id="demoBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 3l14 9-14 9V3z"></path>
+          </svg>
+          Lihat cara menulis
+        </button>
+
+        <label class="switch-row" for="guideToggle">
+          <span class="switch-label">Tampilkan panduan</span>
+          <span class="switch">
+            <input type="checkbox" id="guideToggle" checked>
+            <span class="switch-track"><span class="switch-thumb"></span></span>
+          </span>
+        </label>
+
+        <button type="button" class="btn master-btn" id="masterBtn" aria-pressed="false">
+          <svg class="icon-seal" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="4" y="4" width="16" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+            <path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          <span class="btn-label">Tandai Selesai</span>
+        </button>
+      </div>
+
+      <div class="nav-row">
+        <button type="button" class="nav-btn" id="prevBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+          Sebelumnya
+        </button>
+        <span class="counter" id="counterText">0 / 0</span>
+        <button type="button" class="nav-btn" id="nextBtn">
+          Berikutnya
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+        </button>
+      </div>
+
+      <div class="progress-row">
+        <div class="progress-track"><div id="progressFill"></div></div>
+        <span id="progressLabel"></span>
+      </div>
+
+      <div class="exam-summary" id="examSummary" hidden>
+        <h3 id="examScoreText"></h3>
+        <ul class="exam-missed-list" id="examMissedList"></ul>
+        <div class="exam-summary-actions">
+          <button type="button" class="btn btn-dark" id="retryMissedBtn" hidden>Ulangi yang Salah</button>
+          <button type="button" class="btn master-btn" id="finishExamBtn">Kembali ke Latihan</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="tip-box">
+      <p><strong>Tentang kisi 田字格:</strong> kotak putus-putus di belakang karakter adalah kisi latihan kaligrafi tradisional Tiongkok. Di mode Tulis Hanzi, setiap goresan yang kamu buat divalidasi arah dan urutannya secara langsung — goresan yang salah akan diberi tahu supaya kamu bisa mengulang. Matikan "Tampilkan panduan" untuk berlatih tanpa contekan bentuk karakter. Kalau sudah percaya diri, coba <strong>Mulai Ujian</strong> di atas: hanya pinyin dan arti yang ditampilkan, tanpa panduan sama sekali, dan hasilnya direkap di akhir.</p>
+    </div>
+    <p id="voiceWarning" class="voice-warning" hidden>Suara Mandarin (text-to-speech) tidak ditemukan di perangkat ini. Coba pasang paket bahasa Mandarin untuk text-to-speech di pengaturan perangkatmu.</p>
+    <div class="footer-actions">
+      <button type="button" class="ghost-sm" id="resetProgressBtn">Reset semua progres</button>
+      <p class="credit">85 kosakata dasar · disimpan otomatis di perangkatmu</p>
+    </div>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3/dist/hanzi-writer.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
