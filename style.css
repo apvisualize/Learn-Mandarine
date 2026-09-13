@@ -64,6 +64,19 @@ body{
 .brand-id{ font-family:'Noto Serif SC',serif; font-weight:600; font-size:clamp(1rem,3vw,1.25rem); color:var(--text); display:block; margin-top:4px; }
 .tagline{ margin:14px 0 0; color:var(--text-muted); font-size:0.92rem; line-height:1.6; max-width:46ch; }
 
+/* ---------- Review due bar ---------- */
+.review-due-bar{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  margin:2px 0 14px; padding:13px 18px; border-radius:var(--radius-md);
+  background:linear-gradient(135deg, rgba(var(--gold-rgb),0.16), rgba(var(--accent-rgb),0.12));
+  border:1px solid rgba(var(--gold-rgb),0.4); }
+.review-due-text{ font-size:0.9rem; color:var(--text); }
+.review-due-text strong{ color:var(--gold); font-size:1.05rem; }
+.review-due-btn{ background:linear-gradient(135deg, var(--gold), var(--accent)); color:#1d1408; font-weight:700;
+  box-shadow:0 4px 14px rgba(var(--gold-rgb),0.3); flex-shrink:0; }
+
+body.exam-active .review-due-bar,
+body.tone-active .review-due-bar{ display:none !important; }
+
 /* ---------- Category rail ---------- */
 .category-rail{ display:flex; gap:9px; overflow-x:auto; padding:4px 2px 14px; margin-top:6px; scrollbar-width:none; }
 .category-rail::-webkit-scrollbar{ display:none; }
@@ -220,12 +233,55 @@ body{
 body.exam-active .category-rail,
 body.exam-active .mode-switch,
 body.exam-active #examIdleBar,
+body.exam-active #toneIdleBar,
+body.exam-active #toneStatusBar,
 body.exam-active .nav-row,
 body.exam-active .progress-row,
 body.exam-active .switch-row,
 body.exam-active #demoBtn,
 body.exam-active #masterBtn,
 body.exam-active #clearBtn{ display:none !important; }
+
+/* ---------- Tone practice ---------- */
+.tone-cta-btn{ width:100%; justify-content:center; background:linear-gradient(135deg, #7fb3d5, var(--accent-2));
+  color:#0d1a22; font-weight:700; box-shadow:0 4px 16px rgba(127,179,213,0.3); padding:0.75rem 1rem; }
+.tone-cta-btn:hover{ filter:brightness(1.06); }
+
+.tone-panel{ display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center; }
+.tone-hanzi-row{ display:flex; align-items:center; gap:14px; }
+.tone-hanzi{ font-family:'Noto Serif SC',serif; font-weight:600; font-size:clamp(2.4rem,10vw,3.4rem); line-height:1; }
+.tone-instruction{ margin:0; font-size:0.86rem; color:var(--text-muted); max-width:38ch; }
+
+.tone-syllables{ display:flex; flex-wrap:wrap; justify-content:center; gap:16px; }
+.tone-slot{ display:flex; flex-direction:column; align-items:center; gap:8px; padding:14px 12px; border-radius:var(--radius-md);
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.09); min-width:112px;
+  transition:border-color .2s var(--ease-out), background .2s var(--ease-out); }
+.tone-slot.is-correct{ border-color:rgba(120,200,140,0.55); background:rgba(120,200,140,0.08); }
+.tone-slot.is-wrong{ border-color:rgba(var(--accent-rgb),0.55); background:rgba(var(--accent-rgb),0.08); }
+.tone-slot-char{ font-family:'Noto Serif SC',serif; font-weight:600; font-size:1.7rem; }
+.tone-slot-buttons{ display:flex; gap:5px; }
+.tone-btn{ width:30px; height:30px; border-radius:8px; border:1px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.05);
+  color:var(--text); font-family:'Inter',sans-serif; font-weight:700; font-size:0.82rem; cursor:pointer;
+  transition:background .15s var(--ease-out), border-color .15s var(--ease-out), transform .15s var(--ease-out); }
+.tone-btn:hover:not(:disabled){ border-color:rgba(var(--accent-rgb),0.4); }
+.tone-btn:active:not(:disabled){ transform:scale(0.92); }
+.tone-btn.is-selected{ background:linear-gradient(135deg, var(--accent), var(--accent-2)); border-color:transparent; color:#fff; }
+.tone-btn.is-answer{ box-shadow:0 0 0 2px rgba(120,200,140,0.7) inset; }
+.tone-btn:disabled{ opacity:0.55; cursor:not-allowed; }
+.tone-slot-result{ font-size:0.74rem; color:var(--text-muted); min-height:1.2em; }
+.tone-slot.is-correct .tone-slot-result{ color:#8fd4a4; }
+.tone-slot.is-wrong .tone-slot-result{ color:var(--accent); }
+
+body.tone-active .category-rail,
+body.tone-active .mode-switch,
+body.tone-active #examIdleBar,
+body.tone-active #examStatusBar,
+body.tone-active .prompt-row,
+body.tone-active #canvasWrap,
+body.tone-active #quizFeedback,
+body.tone-active .canvas-tools,
+body.tone-active .nav-row,
+body.tone-active .progress-row{ display:none !important; }
 
 @media (min-width:640px){
   .site-header{ padding-top:48px; }

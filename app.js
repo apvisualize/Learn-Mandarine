@@ -4,121 +4,121 @@
   /* ================= Data ================= */
   const CATEGORIES = [
     {id:"angka", label:"Angka", badge:"数", words:[
-      {hanzi:"一", pinyin:"yī", arti:"satu"},
-      {hanzi:"二", pinyin:"èr", arti:"dua"},
-      {hanzi:"三", pinyin:"sān", arti:"tiga"},
-      {hanzi:"四", pinyin:"sì", arti:"empat"},
-      {hanzi:"五", pinyin:"wǔ", arti:"lima"},
-      {hanzi:"六", pinyin:"liù", arti:"enam"},
-      {hanzi:"七", pinyin:"qī", arti:"tujuh"},
-      {hanzi:"八", pinyin:"bā", arti:"delapan"},
-      {hanzi:"九", pinyin:"jiǔ", arti:"sembilan"},
-      {hanzi:"十", pinyin:"shí", arti:"sepuluh"},
-      {hanzi:"百", pinyin:"bǎi", arti:"seratus"}
+      {hanzi:"一", pinyin:"yī", arti:"satu", tones:[1]},
+      {hanzi:"二", pinyin:"èr", arti:"dua", tones:[4]},
+      {hanzi:"三", pinyin:"sān", arti:"tiga", tones:[1]},
+      {hanzi:"四", pinyin:"sì", arti:"empat", tones:[4]},
+      {hanzi:"五", pinyin:"wǔ", arti:"lima", tones:[3]},
+      {hanzi:"六", pinyin:"liù", arti:"enam", tones:[4]},
+      {hanzi:"七", pinyin:"qī", arti:"tujuh", tones:[1]},
+      {hanzi:"八", pinyin:"bā", arti:"delapan", tones:[1]},
+      {hanzi:"九", pinyin:"jiǔ", arti:"sembilan", tones:[3]},
+      {hanzi:"十", pinyin:"shí", arti:"sepuluh", tones:[2]},
+      {hanzi:"百", pinyin:"bǎi", arti:"seratus", tones:[3]}
     ]},
     {id:"sapaan", label:"Sapaan", badge:"好", words:[
-      {hanzi:"你好", pinyin:"nǐ hǎo", arti:"halo"},
-      {hanzi:"早上好", pinyin:"zǎoshang hǎo", arti:"selamat pagi"},
-      {hanzi:"晚安", pinyin:"wǎn'ān", arti:"selamat malam"},
-      {hanzi:"再见", pinyin:"zàijiàn", arti:"sampai jumpa"},
-      {hanzi:"谢谢", pinyin:"xièxie", arti:"terima kasih"},
-      {hanzi:"不客气", pinyin:"bú kèqi", arti:"sama-sama"},
-      {hanzi:"对不起", pinyin:"duìbuqǐ", arti:"maaf"},
-      {hanzi:"没关系", pinyin:"méi guānxi", arti:"tidak apa-apa"}
+      {hanzi:"你好", pinyin:"nǐ hǎo", arti:"halo", tones:[3, 3]},
+      {hanzi:"早上好", pinyin:"zǎoshang hǎo", arti:"selamat pagi", tones:[3, 5, 3]},
+      {hanzi:"晚安", pinyin:"wǎn'ān", arti:"selamat malam", tones:[3, 1]},
+      {hanzi:"再见", pinyin:"zàijiàn", arti:"sampai jumpa", tones:[4, 4]},
+      {hanzi:"谢谢", pinyin:"xièxie", arti:"terima kasih", tones:[4, 5]},
+      {hanzi:"不客气", pinyin:"bú kèqi", arti:"sama-sama", tones:[2, 4, 5]},
+      {hanzi:"对不起", pinyin:"duìbuqǐ", arti:"maaf", tones:[4, 5, 3]},
+      {hanzi:"没关系", pinyin:"méi guānxi", arti:"tidak apa-apa", tones:[2, 1, 5]}
     ]},
     {id:"ganti", label:"Kata Ganti", badge:"我", words:[
-      {hanzi:"我", pinyin:"wǒ", arti:"saya"},
-      {hanzi:"你", pinyin:"nǐ", arti:"kamu"},
-      {hanzi:"他", pinyin:"tā", arti:"dia (laki-laki)"},
-      {hanzi:"她", pinyin:"tā", arti:"dia (perempuan)"},
-      {hanzi:"我们", pinyin:"wǒmen", arti:"kami / kita"},
-      {hanzi:"你们", pinyin:"nǐmen", arti:"kalian"},
-      {hanzi:"他们", pinyin:"tāmen", arti:"mereka"}
+      {hanzi:"我", pinyin:"wǒ", arti:"saya", tones:[3]},
+      {hanzi:"你", pinyin:"nǐ", arti:"kamu", tones:[3]},
+      {hanzi:"他", pinyin:"tā", arti:"dia (laki-laki)", tones:[1]},
+      {hanzi:"她", pinyin:"tā", arti:"dia (perempuan)", tones:[1]},
+      {hanzi:"我们", pinyin:"wǒmen", arti:"kami / kita", tones:[3, 5]},
+      {hanzi:"你们", pinyin:"nǐmen", arti:"kalian", tones:[3, 5]},
+      {hanzi:"他们", pinyin:"tāmen", arti:"mereka", tones:[1, 5]}
     ]},
     {id:"keluarga", label:"Keluarga", badge:"家", words:[
-      {hanzi:"爸爸", pinyin:"bàba", arti:"ayah"},
-      {hanzi:"妈妈", pinyin:"māma", arti:"ibu"},
-      {hanzi:"哥哥", pinyin:"gēge", arti:"kakak laki-laki"},
-      {hanzi:"姐姐", pinyin:"jiějie", arti:"kakak perempuan"},
-      {hanzi:"弟弟", pinyin:"dìdi", arti:"adik laki-laki"},
-      {hanzi:"妹妹", pinyin:"mèimei", arti:"adik perempuan"},
-      {hanzi:"朋友", pinyin:"péngyou", arti:"teman"},
-      {hanzi:"老师", pinyin:"lǎoshī", arti:"guru"},
-      {hanzi:"学生", pinyin:"xuésheng", arti:"murid"}
+      {hanzi:"爸爸", pinyin:"bàba", arti:"ayah", tones:[4, 5]},
+      {hanzi:"妈妈", pinyin:"māma", arti:"ibu", tones:[1, 5]},
+      {hanzi:"哥哥", pinyin:"gēge", arti:"kakak laki-laki", tones:[1, 5]},
+      {hanzi:"姐姐", pinyin:"jiějie", arti:"kakak perempuan", tones:[3, 5]},
+      {hanzi:"弟弟", pinyin:"dìdi", arti:"adik laki-laki", tones:[4, 5]},
+      {hanzi:"妹妹", pinyin:"mèimei", arti:"adik perempuan", tones:[4, 5]},
+      {hanzi:"朋友", pinyin:"péngyou", arti:"teman", tones:[2, 5]},
+      {hanzi:"老师", pinyin:"lǎoshī", arti:"guru", tones:[3, 1]},
+      {hanzi:"学生", pinyin:"xuésheng", arti:"murid", tones:[2, 5]}
     ]},
     {id:"warna", label:"Warna", badge:"色", words:[
-      {hanzi:"红色", pinyin:"hóngsè", arti:"merah"},
-      {hanzi:"黄色", pinyin:"huángsè", arti:"kuning"},
-      {hanzi:"蓝色", pinyin:"lánsè", arti:"biru"},
-      {hanzi:"绿色", pinyin:"lǜsè", arti:"hijau"},
-      {hanzi:"黑色", pinyin:"hēisè", arti:"hitam"},
-      {hanzi:"白色", pinyin:"báisè", arti:"putih"},
-      {hanzi:"紫色", pinyin:"zǐsè", arti:"ungu"}
+      {hanzi:"红色", pinyin:"hóngsè", arti:"merah", tones:[2, 4]},
+      {hanzi:"黄色", pinyin:"huángsè", arti:"kuning", tones:[2, 4]},
+      {hanzi:"蓝色", pinyin:"lánsè", arti:"biru", tones:[2, 4]},
+      {hanzi:"绿色", pinyin:"lǜsè", arti:"hijau", tones:[4, 4]},
+      {hanzi:"黑色", pinyin:"hēisè", arti:"hitam", tones:[1, 4]},
+      {hanzi:"白色", pinyin:"báisè", arti:"putih", tones:[2, 4]},
+      {hanzi:"紫色", pinyin:"zǐsè", arti:"ungu", tones:[3, 4]}
     ]},
     {id:"waktu", label:"Waktu & Hari", badge:"天", words:[
-      {hanzi:"今天", pinyin:"jīntiān", arti:"hari ini"},
-      {hanzi:"明天", pinyin:"míngtiān", arti:"besok"},
-      {hanzi:"昨天", pinyin:"zuótiān", arti:"kemarin"},
-      {hanzi:"星期一", pinyin:"xīngqīyī", arti:"Senin"},
-      {hanzi:"星期二", pinyin:"xīngqī'èr", arti:"Selasa"},
-      {hanzi:"星期三", pinyin:"xīngqīsān", arti:"Rabu"},
-      {hanzi:"星期四", pinyin:"xīngqīsì", arti:"Kamis"},
-      {hanzi:"星期五", pinyin:"xīngqīwǔ", arti:"Jumat"},
-      {hanzi:"星期六", pinyin:"xīngqīliù", arti:"Sabtu"},
-      {hanzi:"星期日", pinyin:"xīngqīrì", arti:"Minggu"}
+      {hanzi:"今天", pinyin:"jīntiān", arti:"hari ini", tones:[1, 1]},
+      {hanzi:"明天", pinyin:"míngtiān", arti:"besok", tones:[2, 1]},
+      {hanzi:"昨天", pinyin:"zuótiān", arti:"kemarin", tones:[2, 1]},
+      {hanzi:"星期一", pinyin:"xīngqīyī", arti:"Senin", tones:[1, 1, 1]},
+      {hanzi:"星期二", pinyin:"xīngqī'èr", arti:"Selasa", tones:[1, 1, 4]},
+      {hanzi:"星期三", pinyin:"xīngqīsān", arti:"Rabu", tones:[1, 1, 1]},
+      {hanzi:"星期四", pinyin:"xīngqīsì", arti:"Kamis", tones:[1, 1, 4]},
+      {hanzi:"星期五", pinyin:"xīngqīwǔ", arti:"Jumat", tones:[1, 1, 3]},
+      {hanzi:"星期六", pinyin:"xīngqīliù", arti:"Sabtu", tones:[1, 1, 4]},
+      {hanzi:"星期日", pinyin:"xīngqīrì", arti:"Minggu", tones:[1, 1, 4]}
     ]},
     {id:"makanan", label:"Makanan", badge:"吃", words:[
-      {hanzi:"米饭", pinyin:"mǐfàn", arti:"nasi"},
-      {hanzi:"面条", pinyin:"miàntiáo", arti:"mi"},
-      {hanzi:"水", pinyin:"shuǐ", arti:"air"},
-      {hanzi:"茶", pinyin:"chá", arti:"teh"},
-      {hanzi:"咖啡", pinyin:"kāfēi", arti:"kopi"},
-      {hanzi:"牛奶", pinyin:"niúnǎi", arti:"susu"},
-      {hanzi:"鸡蛋", pinyin:"jīdàn", arti:"telur"},
-      {hanzi:"苹果", pinyin:"píngguǒ", arti:"apel"}
+      {hanzi:"米饭", pinyin:"mǐfàn", arti:"nasi", tones:[3, 4]},
+      {hanzi:"面条", pinyin:"miàntiáo", arti:"mi", tones:[4, 2]},
+      {hanzi:"水", pinyin:"shuǐ", arti:"air", tones:[3]},
+      {hanzi:"茶", pinyin:"chá", arti:"teh", tones:[2]},
+      {hanzi:"咖啡", pinyin:"kāfēi", arti:"kopi", tones:[1, 1]},
+      {hanzi:"牛奶", pinyin:"niúnǎi", arti:"susu", tones:[2, 3]},
+      {hanzi:"鸡蛋", pinyin:"jīdàn", arti:"telur", tones:[1, 4]},
+      {hanzi:"苹果", pinyin:"píngguǒ", arti:"apel", tones:[2, 3]}
     ]},
     {id:"hewan", label:"Hewan", badge:"猫", words:[
-      {hanzi:"猫", pinyin:"māo", arti:"kucing"},
-      {hanzi:"狗", pinyin:"gǒu", arti:"anjing"},
-      {hanzi:"鸟", pinyin:"niǎo", arti:"burung"},
-      {hanzi:"鱼", pinyin:"yú", arti:"ikan"},
-      {hanzi:"马", pinyin:"mǎ", arti:"kuda"},
-      {hanzi:"牛", pinyin:"niú", arti:"sapi"}
+      {hanzi:"猫", pinyin:"māo", arti:"kucing", tones:[1]},
+      {hanzi:"狗", pinyin:"gǒu", arti:"anjing", tones:[3]},
+      {hanzi:"鸟", pinyin:"niǎo", arti:"burung", tones:[3]},
+      {hanzi:"鱼", pinyin:"yú", arti:"ikan", tones:[2]},
+      {hanzi:"马", pinyin:"mǎ", arti:"kuda", tones:[3]},
+      {hanzi:"牛", pinyin:"niú", arti:"sapi", tones:[2]}
     ]},
     {id:"sifat", label:"Kata Sifat", badge:"大", words:[
-      {hanzi:"大", pinyin:"dà", arti:"besar"},
-      {hanzi:"小", pinyin:"xiǎo", arti:"kecil"},
-      {hanzi:"多", pinyin:"duō", arti:"banyak"},
-      {hanzi:"少", pinyin:"shǎo", arti:"sedikit"},
-      {hanzi:"好", pinyin:"hǎo", arti:"bagus / baik"},
-      {hanzi:"漂亮", pinyin:"piàoliang", arti:"cantik"},
-      {hanzi:"高兴", pinyin:"gāoxìng", arti:"senang"},
-      {hanzi:"冷", pinyin:"lěng", arti:"dingin"},
-      {hanzi:"热", pinyin:"rè", arti:"panas"}
+      {hanzi:"大", pinyin:"dà", arti:"besar", tones:[4]},
+      {hanzi:"小", pinyin:"xiǎo", arti:"kecil", tones:[3]},
+      {hanzi:"多", pinyin:"duō", arti:"banyak", tones:[1]},
+      {hanzi:"少", pinyin:"shǎo", arti:"sedikit", tones:[3]},
+      {hanzi:"好", pinyin:"hǎo", arti:"bagus / baik", tones:[3]},
+      {hanzi:"漂亮", pinyin:"piàoliang", arti:"cantik", tones:[4, 5]},
+      {hanzi:"高兴", pinyin:"gāoxìng", arti:"senang", tones:[1, 4]},
+      {hanzi:"冷", pinyin:"lěng", arti:"dingin", tones:[3]},
+      {hanzi:"热", pinyin:"rè", arti:"panas", tones:[4]}
     ]},
     {id:"kerja", label:"Kata Kerja", badge:"去", words:[
-      {hanzi:"吃", pinyin:"chī", arti:"makan"},
-      {hanzi:"喝", pinyin:"hē", arti:"minum"},
-      {hanzi:"看", pinyin:"kàn", arti:"melihat / menonton"},
-      {hanzi:"听", pinyin:"tīng", arti:"mendengar"},
-      {hanzi:"说", pinyin:"shuō", arti:"berbicara"},
-      {hanzi:"去", pinyin:"qù", arti:"pergi"},
-      {hanzi:"来", pinyin:"lái", arti:"datang"},
-      {hanzi:"爱", pinyin:"ài", arti:"cinta"},
-      {hanzi:"喜欢", pinyin:"xǐhuan", arti:"suka"},
-      {hanzi:"学习", pinyin:"xuéxí", arti:"belajar"}
+      {hanzi:"吃", pinyin:"chī", arti:"makan", tones:[1]},
+      {hanzi:"喝", pinyin:"hē", arti:"minum", tones:[1]},
+      {hanzi:"看", pinyin:"kàn", arti:"melihat / menonton", tones:[4]},
+      {hanzi:"听", pinyin:"tīng", arti:"mendengar", tones:[1]},
+      {hanzi:"说", pinyin:"shuō", arti:"berbicara", tones:[1]},
+      {hanzi:"去", pinyin:"qù", arti:"pergi", tones:[4]},
+      {hanzi:"来", pinyin:"lái", arti:"datang", tones:[2]},
+      {hanzi:"爱", pinyin:"ài", arti:"cinta", tones:[4]},
+      {hanzi:"喜欢", pinyin:"xǐhuan", arti:"suka", tones:[3, 5]},
+      {hanzi:"学习", pinyin:"xuéxí", arti:"belajar", tones:[2, 2]}
     ]},
     {id:"instrumen", label:"Alat Musik", badge:"乐", words:[
-      {hanzi:"古筝", pinyin:"gǔzhēng", arti:"kecapi Tiongkok (guzheng)"},
-      {hanzi:"二胡", pinyin:"èrhú", arti:"rebab dua senar (erhu)"},
-      {hanzi:"琵琶", pinyin:"pípá", arti:"pipa (semacam gitar Tiongkok)"},
-      {hanzi:"笛子", pinyin:"dízi", arti:"suling bambu"},
-      {hanzi:"古琴", pinyin:"gǔqín", arti:"kecapi tujuh senar (guqin)"},
-      {hanzi:"唢呐", pinyin:"suǒnà", arti:"terompet Tiongkok (suona)"},
-      {hanzi:"扬琴", pinyin:"yángqín", arti:"simbalon Tiongkok (yangqin)"},
-      {hanzi:"笙", pinyin:"shēng", arti:"alat musik tiup mulut (sheng)"},
-      {hanzi:"锣", pinyin:"luó", arti:"gong"},
-      {hanzi:"鼓", pinyin:"gǔ", arti:"genderang / drum"}
+      {hanzi:"古筝", pinyin:"gǔzhēng", arti:"kecapi Tiongkok (guzheng)", tones:[3, 1]},
+      {hanzi:"二胡", pinyin:"èrhú", arti:"rebab dua senar (erhu)", tones:[4, 2]},
+      {hanzi:"琵琶", pinyin:"pípá", arti:"pipa (semacam gitar Tiongkok)", tones:[2, 2]},
+      {hanzi:"笛子", pinyin:"dízi", arti:"suling bambu", tones:[2, 5]},
+      {hanzi:"古琴", pinyin:"gǔqín", arti:"kecapi tujuh senar (guqin)", tones:[3, 2]},
+      {hanzi:"唢呐", pinyin:"suǒnà", arti:"terompet Tiongkok (suona)", tones:[3, 4]},
+      {hanzi:"扬琴", pinyin:"yángqín", arti:"simbalon Tiongkok (yangqin)", tones:[2, 2]},
+      {hanzi:"笙", pinyin:"shēng", arti:"alat musik tiup mulut (sheng)", tones:[1]},
+      {hanzi:"锣", pinyin:"luó", arti:"gong", tones:[2]},
+      {hanzi:"鼓", pinyin:"gǔ", arti:"genderang / drum", tones:[3]}
     ]}
   ];
 
@@ -126,7 +126,7 @@
   const INK_COLOR = "#241a11";
 
   /* ================= State ================= */
-  const state = { catId:"semua", index:0, mode:"hanzi", showGuide:true, mastered:new Set() };
+  const state = { catId:"semua", index:0, mode:"hanzi", showGuide:true, srs:{} };
 
   function currentList(){
     return state.catId === "semua" ? ALL_WORDS : ALL_WORDS.filter(w => w.catId === state.catId);
@@ -146,6 +146,47 @@
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
     return arr;
+  }
+
+  /* ================= Spaced repetition (simplified SM-2) =================
+     Each word tracks: repetitions (consecutive correct reviews), interval
+     (days until next review), ease (how quickly the interval grows), and
+     due (the timestamp it should be reviewed again). A correct answer
+     pushes the next review further out; a mistake resets it back to
+     "review again tomorrow" — the same idea behind Anki, simplified down
+     to a single correct/incorrect signal per word instead of a 0-5 scale. */
+  const SRS_DEFAULT_EASE = 2.5;
+  function todayTs(){ return new Date().setHours(0,0,0,0); }
+  function addDays(ts, days){ return ts + days*86400000; }
+
+  function recordReview(hanzi, wasCorrect){
+    const rec = state.srs[hanzi] || {repetitions:0, interval:0, ease:SRS_DEFAULT_EASE, due:todayTs()};
+    if(wasCorrect){
+      rec.repetitions++;
+      if(rec.repetitions === 1) rec.interval = 1;
+      else if(rec.repetitions === 2) rec.interval = 3;
+      else rec.interval = Math.max(1, Math.round(rec.interval * rec.ease));
+      rec.ease = Math.min(2.8, rec.ease + 0.05);
+    } else {
+      rec.repetitions = 0;
+      rec.interval = 1;
+      rec.ease = Math.max(1.3, rec.ease - 0.2);
+    }
+    rec.due = addDays(todayTs(), rec.interval);
+    state.srs[hanzi] = rec;
+    saveProgress();
+  }
+
+  function isDue(hanzi){
+    const rec = state.srs[hanzi];
+    return !!rec && rec.due <= todayTs();
+  }
+  function isMastered(hanzi){
+    const rec = state.srs[hanzi];
+    return !!rec && rec.repetitions >= 2;
+  }
+  function getDueWords(){
+    return ALL_WORDS.filter(w => isDue(w.hanzi));
   }
 
   /* ================= Storage (with fallback) =================
@@ -175,13 +216,22 @@
       const res = await storageBackend.get("mandarin-progress");
       if(res && res.value){
         const data = JSON.parse(res.value);
-        if(data && Array.isArray(data.mastered)) state.mastered = new Set(data.mastered);
+        if(data && data.srs && typeof data.srs === "object"){
+          state.srs = data.srs;
+        } else if(data && Array.isArray(data.mastered)){
+          // Migrate from the old binary "mastered" list (pre-SRS) into a
+          // reasonable starting SRS state instead of losing that progress.
+          const due = addDays(todayTs(), 6);
+          data.mastered.forEach(hanzi => {
+            state.srs[hanzi] = {repetitions:2, interval:6, ease:SRS_DEFAULT_EASE, due};
+          });
+        }
       }
     }catch(err){ /* belum ada progres tersimpan */ }
   }
   async function saveProgress(){
     try{
-      await storageBackend.set("mandarin-progress", JSON.stringify({mastered:Array.from(state.mastered)}));
+      await storageBackend.set("mandarin-progress", JSON.stringify({srs:state.srs}));
     }catch(err){ console.error("Gagal menyimpan progres", err); }
   }
 
@@ -472,6 +522,7 @@
   // and reports the combined mistake count for the whole word at the end.
   function startQuiz(){
     if(!writers.length) return;
+    const word = currentWord();
     let totalMistakes = 0;
     const multi = writers.length > 1;
 
@@ -498,6 +549,8 @@
             handleExamAnswerComplete(totalMistakes);
           } else {
             setQuizFeedback(totalMistakes === 0 ? "Sempurna, tanpa kesalahan!" : `Selesai dengan ${totalMistakes} kesalahan.`);
+            if(word) recordReview(word.hanzi, totalMistakes === 0);
+            render();
           }
         }
       });
@@ -540,6 +593,27 @@
     examCountEl.textContent = currentList().length;
   }
 
+  const reviewDueBarEl = document.getElementById("reviewDueBar");
+  const reviewDueCountEl = document.getElementById("reviewDueCount");
+
+  function updateReviewDueBar(){
+    if(!reviewDueBarEl || examState || toneState) return;
+    const due = getDueWords();
+    if(due.length > 0){
+      reviewDueBarEl.hidden = false;
+      reviewDueCountEl.textContent = due.length;
+    } else {
+      reviewDueBarEl.hidden = true;
+    }
+  }
+
+  document.getElementById("startReviewBtn").addEventListener("click", () => {
+    if(toneState) return;
+    const due = getDueWords();
+    if(!due.length) return;
+    startExam(due);
+  });
+
   function startExam(list){
     if(!list || !list.length) return;
     examState = { list: shuffle(list.slice()), idx: 0, results: [] };
@@ -556,6 +630,7 @@
   function handleExamAnswerComplete(mistakes){
     const item = examState.list[examState.idx];
     examState.results.push({hanzi:item.hanzi, pinyin:item.pinyin, arti:item.arti, mistakes});
+    recordReview(item.hanzi, mistakes === 0);
     setQuizFeedback(mistakes === 0 ? "Benar, tanpa kesalahan!" : `Dicatat — ${mistakes} kesalahan.`, mistakes > 0);
     examState.idx++;
     setTimeout(() => {
@@ -613,6 +688,7 @@
   }
 
   document.getElementById("startExamBtn").addEventListener("click", () => {
+    if(toneState) return; // one quiz mode at a time
     startExam(currentList());
   });
   document.getElementById("exitExamBtn").addEventListener("click", exitExam);
@@ -622,6 +698,187 @@
     const list = examState.missedWords;
     examState = null;
     startExam(list);
+  });
+
+  /* ================= Tone practice =================
+     Mandarin is tonal — 妈/麻/马/骂 (mā/má/mǎ/mà) are completely different
+     words that only differ by tone, and that's the piece most learners
+     skip past because the app only ever *showed* the tone marks rather
+     than testing them. Here the user hears (or already knows) the word,
+     then has to pick the correct tone (1-4, or "轻" for the neutral tone)
+     for every character — no pinyin shown until after checking. */
+  let toneState = null; // { list, idx, results:[], answers:[], checked }
+  const TONE_LABELS = {1:"1", 2:"2", 3:"3", 4:"4", 5:"轻"};
+
+  const toneIdleBar = document.getElementById("toneIdleBar");
+  const toneCountEl = document.getElementById("toneCount");
+  const toneStatusBar = document.getElementById("toneStatusBar");
+  const toneProgressTextEl = document.getElementById("toneProgressText");
+  const tonePanelEl = document.getElementById("tonePanel");
+  const toneHanziDisplayEl = document.getElementById("toneHanziDisplay");
+  const toneSyllablesEl = document.getElementById("toneSyllables");
+  const toneFeedbackEl = document.getElementById("toneFeedback");
+  const toneCheckBtn = document.getElementById("toneCheckBtn");
+  const toneSpeakBtn = document.getElementById("toneSpeakBtn");
+  const toneSummaryEl = document.getElementById("toneSummary");
+  const toneScoreTextEl = document.getElementById("toneScoreText");
+  const toneMissedListEl = document.getElementById("toneMissedList");
+  const toneRetryMissedBtn = document.getElementById("toneRetryMissedBtn");
+
+  function updateToneCount(){
+    if(toneState) return;
+    toneCountEl.textContent = currentList().length;
+  }
+
+  function startTonePractice(list){
+    if(!list || !list.length) return;
+    toneState = { list: shuffle(list.slice()), idx: 0, results: [], answers: [], checked: false };
+    document.body.classList.add("tone-active");
+    toneIdleBar.hidden = true;
+    toneStatusBar.hidden = false;
+    toneSummaryEl.hidden = true;
+    tonePanelEl.hidden = false;
+    renderToneQuestion();
+  }
+
+  function renderToneQuestion(){
+    const item = toneState.list[toneState.idx];
+    toneState.answers = new Array(item.tones.length).fill(null);
+    toneState.checked = false;
+    toneProgressTextEl.textContent = `Soal ${toneState.idx+1} / ${toneState.list.length}`;
+    toneHanziDisplayEl.textContent = item.hanzi;
+    toneFeedbackEl.textContent = "";
+    toneFeedbackEl.classList.remove("is-mistake");
+    toneCheckBtn.textContent = "Periksa Jawaban";
+    toneCheckBtn.disabled = true;
+    toneSyllablesEl.innerHTML = "";
+
+    Array.from(item.hanzi).forEach((ch, i) => {
+      const slot = document.createElement("div");
+      slot.className = "tone-slot";
+
+      const chEl = document.createElement("span");
+      chEl.className = "tone-slot-char";
+      chEl.lang = "zh-CN";
+      chEl.textContent = ch;
+      slot.appendChild(chEl);
+
+      const btnRow = document.createElement("div");
+      btnRow.className = "tone-slot-buttons";
+      [1,2,3,4,5].forEach(t => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "tone-btn";
+        b.textContent = TONE_LABELS[t];
+        b.dataset.tone = t;
+        b.addEventListener("click", () => {
+          if(toneState.checked) return;
+          toneState.answers[i] = t;
+          btnRow.querySelectorAll(".tone-btn").forEach(x => x.classList.remove("is-selected"));
+          b.classList.add("is-selected");
+          toneCheckBtn.disabled = toneState.answers.some(a => a === null);
+        });
+        btnRow.appendChild(b);
+      });
+      slot.appendChild(btnRow);
+
+      const resultEl = document.createElement("span");
+      resultEl.className = "tone-slot-result";
+      slot.appendChild(resultEl);
+
+      toneSyllablesEl.appendChild(slot);
+    });
+  }
+
+  function checkToneAnswers(){
+    const item = toneState.list[toneState.idx];
+    const slots = toneSyllablesEl.querySelectorAll(".tone-slot");
+    let allCorrect = true;
+    slots.forEach((slot, i) => {
+      const correct = item.tones[i];
+      const chosen = toneState.answers[i];
+      const isRight = chosen === correct;
+      if(!isRight) allCorrect = false;
+      slot.classList.add(isRight ? "is-correct" : "is-wrong");
+      slot.querySelector(".tone-slot-result").textContent = isRight ? "Benar" : `Harusnya nada ${TONE_LABELS[correct]}`;
+      slot.querySelectorAll(".tone-btn").forEach(b => {
+        b.disabled = true;
+        if(Number(b.dataset.tone) === correct) b.classList.add("is-answer");
+      });
+    });
+    toneState.checked = true;
+    toneFeedbackEl.textContent = `Pinyin lengkapnya: ${item.pinyin}`;
+    toneFeedbackEl.classList.toggle("is-mistake", !allCorrect);
+    toneState.results.push({hanzi:item.hanzi, pinyin:item.pinyin, arti:item.arti, correct:allCorrect});
+    recordReview(item.hanzi, allCorrect);
+    toneCheckBtn.textContent = (toneState.idx+1 < toneState.list.length) ? "Lanjut ke soal berikutnya" : "Lihat Hasil";
+    toneCheckBtn.disabled = false;
+  }
+
+  function finishTonePractice(){
+    const results = toneState.results;
+    const total = results.length;
+    const correctCount = results.filter(r => r.correct).length;
+    const missed = results.filter(r => !r.correct);
+
+    toneStatusBar.hidden = true;
+    tonePanelEl.hidden = true;
+    toneSummaryEl.hidden = false;
+
+    toneScoreTextEl.textContent = `${correctCount} / ${total} kata dengan nada benar semua`;
+    toneMissedListEl.innerHTML = "";
+    if(missed.length === 0){
+      const li = document.createElement("li");
+      li.textContent = "Semua nada benar — mantap!";
+      toneMissedListEl.appendChild(li);
+    } else {
+      missed.forEach(r => {
+        const li = document.createElement("li");
+        li.textContent = `${r.hanzi} (${r.pinyin}) — ${r.arti}`;
+        toneMissedListEl.appendChild(li);
+      });
+    }
+    toneState.missedWords = missed.map(r => ALL_WORDS.find(w => w.hanzi === r.hanzi)).filter(Boolean);
+    toneRetryMissedBtn.hidden = missed.length === 0;
+  }
+
+  function exitTonePractice(){
+    toneState = null;
+    document.body.classList.remove("tone-active");
+    toneIdleBar.hidden = false;
+    toneStatusBar.hidden = true;
+    tonePanelEl.hidden = true;
+    toneSummaryEl.hidden = true;
+    render();
+  }
+
+  toneSpeakBtn.addEventListener("click", () => {
+    const item = toneState && toneState.list[toneState.idx];
+    if(item) speak(item.hanzi);
+  });
+
+  toneCheckBtn.addEventListener("click", () => {
+    if(!toneState) return;
+    if(!toneState.checked){
+      checkToneAnswers();
+    } else {
+      toneState.idx++;
+      if(toneState.idx >= toneState.list.length) finishTonePractice();
+      else renderToneQuestion();
+    }
+  });
+
+  document.getElementById("startToneBtn").addEventListener("click", () => {
+    if(examState) return; // one quiz mode at a time
+    startTonePractice(currentList());
+  });
+  document.getElementById("exitToneBtn").addEventListener("click", exitTonePractice);
+  document.getElementById("toneFinishBtn").addEventListener("click", exitTonePractice);
+  toneRetryMissedBtn.addEventListener("click", () => {
+    if(!toneState || !toneState.missedWords || !toneState.missedWords.length) return;
+    const list = toneState.missedWords;
+    toneState = null;
+    startTonePractice(list);
   });
 
   /* ================= Speech synthesis (permissive availability check) =================
@@ -766,20 +1023,22 @@
 
     document.getElementById("counterText").textContent = list.length ? `${state.index+1} / ${list.length}` : "0 / 0";
     updateExamCount();
+    updateToneCount();
 
     const masterBtn = document.getElementById("masterBtn");
-    const isMastered = !!(word && state.mastered.has(word.hanzi));
-    masterBtn.classList.toggle("is-active", isMastered);
-    masterBtn.setAttribute("aria-pressed", isMastered ? "true" : "false");
-    masterBtn.querySelector(".btn-label").textContent = isMastered ? "Sudah Dikuasai" : "Tandai Selesai";
+    const isWordMastered = !!(word && isMastered(word.hanzi));
+    masterBtn.classList.toggle("is-active", isWordMastered);
+    masterBtn.setAttribute("aria-pressed", isWordMastered ? "true" : "false");
+    masterBtn.querySelector(".btn-label").textContent = isWordMastered ? "Sudah Dikuasai" : "Tandai Selesai";
 
     document.getElementById("clearBtnLabel").textContent = state.mode === "hanzi" ? "Ulangi" : "Hapus";
     document.getElementById("demoBtn").style.display = state.mode === "hanzi" ? "inline-flex" : "none";
 
-    const masteredInList = list.filter(w => state.mastered.has(w.hanzi)).length;
+    const masteredInList = list.filter(w => isMastered(w.hanzi)).length;
     const pct = list.length ? Math.round(masteredInList/list.length*100) : 0;
     document.getElementById("progressFill").style.width = pct + "%";
     document.getElementById("progressLabel").textContent = list.length ? `${masteredInList} dari ${list.length} kata dikuasai (${pct}%)` : "";
+    updateReviewDueBar();
 
     wrap.classList.toggle("mode-pinyin", state.mode === "pinyin");
     wrap.setAttribute("aria-label", `Papan latihan menulis ${state.mode === "hanzi" ? "karakter Han" : "pinyin"} untuk kata saat ini`);
@@ -875,15 +1134,24 @@
   document.getElementById("masterBtn").addEventListener("click", () => {
     const word = currentWord();
     if(!word) return;
-    if(state.mastered.has(word.hanzi)) state.mastered.delete(word.hanzi);
-    else state.mastered.add(word.hanzi);
-    saveProgress();
+    if(isMastered(word.hanzi)){
+      // Toggling off means "actually, I need to practice this again" —
+      // reset it back to a fresh, unreviewed state.
+      delete state.srs[word.hanzi];
+      saveProgress();
+    } else {
+      // Manually marking it mastered logs it as if it had already survived
+      // two correct spaced reviews, so it's scheduled ahead like any other
+      // word the SRS considers learned, not sitting outside the system.
+      state.srs[word.hanzi] = {repetitions:2, interval:6, ease:SRS_DEFAULT_EASE, due:addDays(todayTs(),6)};
+      saveProgress();
+    }
     render();
   });
 
   document.getElementById("resetProgressBtn").addEventListener("click", () => {
     if(confirm("Hapus semua progres latihan yang tersimpan di perangkat ini?")){
-      state.mastered.clear();
+      state.srs = {};
       saveProgress();
       render();
     }
