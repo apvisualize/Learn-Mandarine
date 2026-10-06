@@ -2,9 +2,9 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>习字 · Latihan Aksara Mandarin</title>
-<meta name="description" content="Latihan menulis Hanzi dan Pinyin langsung di layar sentuh, lengkap dengan validasi urutan goresan.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>习字 · Latihan Aksara Mandarin — Mode Game</title>
+<meta name="description" content="Latihan menulis Hanzi dan Pinyin dengan validasi urutan goresan, dikemas jadi game: XP, nyawa, kombo, dan lencana pencapaian.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -25,46 +25,40 @@
     <div class="header-top">
       <div class="brand">
         <svg viewBox="0 0 40 40" aria-hidden="true">
-          <rect x="4" y="4" width="32" height="32" rx="6" fill="none" stroke="var(--accent)" stroke-width="2"></rect>
-          <path d="M13 21c2-5 4.5-7.5 6.5-7.5s3.2 3.3 1 7-0.8 6.5 2.4 6.5 5.4-3.2 6.1-7.5" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"></path>
+          <rect x="3" y="3" width="34" height="34" rx="7" fill="var(--accent)"></rect>
+          <rect x="3" y="3" width="34" height="34" rx="7" fill="none" stroke="rgba(0,0,0,0.28)" stroke-width="1"></rect>
+          <rect x="6.5" y="6.5" width="27" height="27" rx="4.5" fill="none" stroke="rgba(244,234,216,0.55)" stroke-width="1"></rect>
+          <text x="20" y="28" text-anchor="middle" font-family="'Noto Serif SC', serif" font-size="21" font-weight="700" fill="#f4ead8">字</text>
         </svg>
         <h1 class="brand-title">
           <span class="brand-cn">习字</span>
           <span class="brand-id">Latihan Aksara Mandarin</span>
         </h1>
       </div>
-      <div class="music-widget" id="musicWidget">
-        <button type="button" class="icon-btn music-btn-sm" id="musicPrevBtn" aria-label="Lagu sebelumnya" title="Lagu sebelumnya">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M19 20L9 12l10-8v16z"></path>
-            <path d="M5 19V5"></path>
-          </svg>
-        </button>
-        <button type="button" class="icon-btn music-btn" id="musicToggleBtn" aria-pressed="false" title="Putar musik latar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M9 18V5l12-2v13"></path>
-            <circle cx="6" cy="18" r="3"></circle>
-            <circle cx="18" cy="16" r="3"></circle>
-          </svg>
-        </button>
-        <button type="button" class="icon-btn music-btn-sm" id="musicNextBtn" aria-label="Lagu berikutnya" title="Lagu berikutnya">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M5 4l10 8-10 8V4z"></path>
-            <path d="M19 5v14"></path>
-          </svg>
-        </button>
+      <div class="hud">
+        <div class="hud-top">
+          <div class="hearts-row" id="heartsRow" aria-label="Nyawa"></div>
+          <span class="level-badge" id="levelBadge">Lv 1</span>
+        </div>
       </div>
     </div>
-    <p class="tagline">Lacak Hanzi di atas kisi 田字格 dengan validasi urutan goresan, atau tulis Pinyin di garis latihan — semua langsung dari layar sentuhmu, satu kata per satu.</p>
-    <p class="music-track-name" id="musicTrackName" hidden></p>
+    <div class="xp-bar-row">
+      <div class="xp-bar-track"><div class="xp-bar-fill" id="xpFill"></div></div>
+      <span class="xp-text" id="xpText">0 / 100 XP</span>
+      <span class="day-streak"><span class="flame">🔥</span> <span id="dayStreakEl">0 hari</span></span>
+    </div>
+    <p class="tagline">Lacak Hanzi di kisi 田字格 dengan validasi urutan goresan — kumpulkan XP, jaga nyawamu, dan buka lencana sambil belajar.</p>
   </header>
 
-  <nav class="category-rail reveal delay-1" id="categoryRail" aria-label="Pilih kategori kosakata"></nav>
+  <nav class="category-rail" id="categoryRail" aria-label="Pilih kategori kosakata"></nav>
+  <nav class="level-rail" id="levelRail" aria-label="Pilih tingkat kesulitan menulis"></nav>
 
   <div class="review-due-bar reveal delay-1" id="reviewDueBar" hidden>
     <div class="review-due-text"><strong id="reviewDueCount">0</strong> kata perlu direview hari ini</div>
     <button type="button" class="btn review-due-btn" id="startReviewBtn">Mulai Review</button>
   </div>
+
+  <div class="badges-shelf" id="badgesShelf"></div>
 
   <main>
     <div class="mode-switch reveal delay-1">
@@ -74,14 +68,10 @@
 
     <div class="exam-bar reveal delay-1" id="examIdleBar">
       <button type="button" class="btn exam-cta-btn" id="startExamBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M9 11l3 3L22 4"></path>
-          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
         Mulai Ujian (<span id="examCount">0</span> kata)
       </button>
     </div>
-
     <div class="exam-status-bar" id="examStatusBar" hidden>
       <span id="examProgressText">Soal 1 / 10</span>
       <button type="button" class="ghost-sm" id="exitExamBtn">Keluar dari ujian</button>
@@ -89,31 +79,84 @@
 
     <div class="exam-bar reveal delay-1" id="toneIdleBar">
       <button type="button" class="btn tone-cta-btn" id="startToneBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M3 12h3l3-8 4 16 3-8h5"></path>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h3l3-8 4 16 3-8h5"></path></svg>
         Latihan Nada (<span id="toneCount">0</span> kata)
       </button>
     </div>
-
     <div class="exam-status-bar tone-status-bar" id="toneStatusBar" hidden>
       <span id="toneProgressText">Soal 1 / 10</span>
       <button type="button" class="ghost-sm" id="exitToneBtn">Keluar dari latihan nada</button>
     </div>
 
-    <section class="practice-card reveal delay-2" aria-label="Papan latihan menulis">
+    <div class="exam-bar reveal delay-1" id="maIdleBar">
+      <button type="button" class="btn ma-cta-btn" id="startMaBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" stroke="none"></path><path d="M16.3 8.7a5 5 0 0 1 0 6.6" stroke-linecap="round"></path><path d="M19 6.2a8.5 8.5 0 0 1 0 11.6" stroke-linecap="round"></path></svg>
+        Latihan Nada &amp; Tanda Pinyin (mā má mǎ mà)
+      </button>
+    </div>
+
+    <section class="ma-panel practice-card reveal delay-2" id="maPanel" hidden aria-label="Latihan mengenali 5 nada ma">
+      <p class="ma-intro">Huruf pinyin yang sama bisa berarti lain sama sekali gara-gara tanda nadanya. Pilih tingkat (mulai dari Tingkat 1), pilih suku kata, pahami tandanya, lalu tebak dari suara.</p>
+      <div class="ma-set-chips ma-level-tabs" id="maLevelTabs" role="group" aria-label="Pilih tingkat"></div>
+      <p class="ma-level-desc" id="maLevelDesc"></p>
+      <div class="ma-set-chips ma-set-scroll" id="maSetChips" role="group" aria-label="Pilih suku kata pinyin"></div>
+      <div class="ma-marks-tip">
+        <p><strong>Tanda nada:</strong> ā (ˉ datar tinggi) · á (ˊ naik) · ǎ (ˇ turun-naik) · à (ˋ jatuh) · a (tanpa tanda = netral).</p>
+        <p><strong>Letak tanda:</strong> di huruf <em>a</em> kalau ada; kalau tidak, di <em>e</em> atau <em>o</em>; pada <em>iu</em> dan <em>ui</em> di huruf terakhir (liú, huí); selain itu di vokal kedua (xiè).</p>
+      </div>
+      <details class="ma-rules">
+        <summary>Tanda &amp; aturan pinyin lain yang sering bikin salah baca</summary>
+        <ul>
+          <li><strong>ü</strong> (dua titik): <em>lù</em> 路 "jalan" beda dari <em>lǜ</em> 绿 "hijau". Setelah j, q, x, y titiknya dihilangkan tapi tetap dibaca ü (<em>xué</em>, <em>yuè</em>).</li>
+          <li><strong>Apostrof (')</strong> memisahkan suku kata: <em>xiān</em> 先 "dulu" vs <em>Xī'ān</em> 西安 "kota Xi'an".</li>
+          <li><strong>Dua nada 3 berurutan:</strong> yang pertama dibaca nada 2. Ditulis <em>nǐ hǎo</em>, dibunyikan <em>ní hǎo</em>.</li>
+          <li><strong>不 bù</strong> menjadi <em>bú</em> sebelum nada 4: <em>bú shì</em> 不是.</li>
+          <li><strong>一 yī</strong> menjadi <em>yí</em> sebelum nada 4 (<em>yí gè</em> 一个) dan <em>yì</em> sebelum nada 1-3 (<em>yìqǐ</em> 一起).</li>
+          <li><strong>Huruf mirip:</strong> zh/ch/sh (lidah melengkung) vs z/c/s, dan j/q/x. Latih lewat set "zh/z sh/s" dan "j q x" di atas.</li>
+        </ul>
+      </details>
+      <div class="ma-ref-grid" id="maRefGrid"></div>
+      <div class="ma-quiz-box">
+        <p class="ma-quiz-instruction" id="maQuizInstruction">Dengarkan, lalu tebak karakternya.</p>
+        <button type="button" class="btn master-btn" id="maPlayBtn">🔊 Putar Lagi</button>
+        <div class="ma-quiz-options" id="maQuizOptions"></div>
+        <p class="quiz-feedback" id="maFeedback" aria-live="polite"></p>
+        <div class="ma-quiz-footer">
+          <span id="maScoreText">Skor: 0 / 0</span>
+          <button type="button" class="ghost-sm" id="exitMaBtn">Keluar</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="exam-bar reveal delay-1" id="dyIdleBar">
+      <button type="button" class="btn dy-cta-btn" id="startDyBtn">
+        <span lang="zh-CN" aria-hidden="true">多音字</span> · Latihan Bacaan Ganda (<span id="dyCount">0</span> karakter)
+      </button>
+    </div>
+
+    <section class="dy-panel practice-card reveal delay-2" id="dyPanel" hidden aria-label="Latihan bacaan ganda 多音字">
+      <p class="ma-intro">Satu karakter bisa dibaca berbeda tergantung katanya. Lihat kata di bawah, lalu pilih bacaan karakter yang disorot.</p>
+      <div class="dy-word" id="dyWord" lang="zh-CN"></div>
+      <button type="button" class="btn master-btn" id="dyPlayBtn">🔊 Dengar kata</button>
+      <div class="ma-quiz-options" id="dyOptions"></div>
+      <p class="quiz-feedback" id="dyFeedback" aria-live="polite"></p>
+      <div class="ma-quiz-footer"><span id="dyScoreText">Skor: 0 / 0</span><button type="button" class="ghost-sm" id="exitDyBtn">Keluar</button></div>
+      <details class="ma-rules dy-ref">
+        <summary>Daftar 多音字 beserta contoh katanya</summary>
+        <div id="dyRefList"></div>
+      </details>
+    </section>
+
+    <section class="practice-card reveal delay-2" id="writingCard" aria-label="Papan latihan menulis">
       <div class="prompt-row">
         <div class="prompt-main">
           <p id="promptHanzi" lang="zh-CN"></p>
           <p id="promptPinyin"></p>
           <p id="promptArti"></p>
+          <p id="promptLevel"></p>
         </div>
         <button type="button" class="icon-btn" id="speakBtn" aria-label="Dengarkan pengucapan">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" stroke="none"></path>
-            <path d="M16.3 8.7a5 5 0 0 1 0 6.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
-            <path d="M19 6.2a8.5 8.5 0 0 1 0 11.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
-          </svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" stroke="none"></path><path d="M16.3 8.7a5 5 0 0 1 0 6.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path><path d="M19 6.2a8.5 8.5 0 0 1 0 11.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
         </button>
       </div>
 
@@ -124,50 +167,31 @@
       </div>
 
       <p id="quizFeedback" class="quiz-feedback" aria-live="polite"></p>
+      <p id="comboLine" class="combo-line" aria-live="polite"></p>
 
       <div class="canvas-tools">
         <button type="button" class="btn btn-dark" id="clearBtn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M4 12a8 8 0 1 1 2.6 5.9"></path>
-            <path d="M4 17v-5h5"></path>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 1 2.6 5.9"></path><path d="M4 17v-5h5"></path></svg>
           <span id="clearBtnLabel">Ulangi</span>
         </button>
-
         <button type="button" class="btn btn-dark" id="demoBtn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M5 3l14 9-14 9V3z"></path>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3l14 9-14 9V3z"></path></svg>
           Lihat cara menulis
         </button>
-
         <label class="switch-row" for="guideToggle">
           <span class="switch-label">Tampilkan panduan</span>
-          <span class="switch">
-            <input type="checkbox" id="guideToggle" checked>
-            <span class="switch-track"><span class="switch-thumb"></span></span>
-          </span>
+          <span class="switch"><input type="checkbox" id="guideToggle" checked><span class="switch-track"><span class="switch-thumb"></span></span></span>
         </label>
-
         <button type="button" class="btn master-btn" id="masterBtn" aria-pressed="false">
-          <svg class="icon-seal" viewBox="0 0 24 24" aria-hidden="true">
-            <rect x="4" y="4" width="16" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
-            <path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
+          <svg class="icon-seal" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="1.8"></rect><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
           <span class="btn-label">Tandai Selesai</span>
         </button>
       </div>
 
       <div class="nav-row">
-        <button type="button" class="nav-btn" id="prevBtn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
-          Sebelumnya
-        </button>
+        <button type="button" class="nav-btn" id="prevBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>Sebelumnya</button>
         <span class="counter" id="counterText">0 / 0</span>
-        <button type="button" class="nav-btn" id="nextBtn">
-          Berikutnya
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
-        </button>
+        <button type="button" class="nav-btn" id="nextBtn">Berikutnya<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
       </div>
 
       <div class="progress-row">
@@ -187,13 +211,7 @@
       <div class="tone-panel" id="tonePanel" hidden>
         <div class="tone-hanzi-row">
           <span class="tone-hanzi" id="toneHanziDisplay" lang="zh-CN"></span>
-          <button type="button" class="icon-btn" id="toneSpeakBtn" aria-label="Dengarkan pengucapan">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" stroke="none"></path>
-              <path d="M16.3 8.7a5 5 0 0 1 0 6.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
-              <path d="M19 6.2a8.5 8.5 0 0 1 0 11.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
-            </svg>
-          </button>
+          <button type="button" class="icon-btn" id="toneSpeakBtn" aria-label="Dengarkan pengucapan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" stroke="none"></path><path d="M16.3 8.7a5 5 0 0 1 0 6.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path><path d="M19 6.2a8.5 8.5 0 0 1 0 11.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button>
         </div>
         <p class="tone-instruction">Dengarkan, lalu pilih nada tiap karakter (1-4, atau "轻" untuk nada netral).</p>
         <div class="tone-syllables" id="toneSyllables"></div>
@@ -214,18 +232,32 @@
 
   <footer class="site-footer">
     <div class="tip-box">
-      <p><strong>Tentang kisi 田字格:</strong> kotak putus-putus di belakang karakter adalah kisi latihan kaligrafi tradisional Tiongkok. Di mode Tulis Hanzi, setiap goresan yang kamu buat divalidasi arah dan urutannya secara langsung — goresan yang salah akan diberi tahu supaya kamu bisa mengulang. Matikan "Tampilkan panduan" untuk berlatih tanpa contekan bentuk karakter. Kalau sudah percaya diri, coba <strong>Mulai Ujian</strong> di atas: hanya pinyin dan arti yang ditampilkan, tanpa panduan sama sekali, dan hasilnya direkap di akhir.</p>
+      <p><strong>Cara main:</strong> setiap kata yang kamu selesaikan tanpa kesalahan memberi XP dan menambah kombo. Salah goresan/nada mengurangi 1 nyawa ❤️ dan memutus kombo — kumpulkan 5 kombo berturut-turut untuk memulihkan nyawa. Naik level dan buka lencana di bawah saat kamu makin mahir. Matikan "Tampilkan panduan" untuk latihan tanpa contekan bentuk karakter.</p>
     </div>
-    <p id="voiceWarning" class="voice-warning" hidden>Suara Mandarin (text-to-speech) tidak ditemukan di perangkat ini. Coba pasang paket bahasa Mandarin untuk text-to-speech di pengaturan perangkatmu.</p>
+    <p id="voiceWarning" class="voice-warning" hidden>Suara Mandarin (text-to-speech) tidak ditemukan di perangkat ini. Coba pasang paket bahasa Mandarin di pengaturan perangkatmu.</p>
     <div class="footer-actions">
       <button type="button" class="ghost-sm" id="resetProgressBtn">Reset semua progres</button>
-      <p class="credit">95 kosakata dasar · disimpan otomatis di perangkatmu</p>
+      <p class="credit">95 kosakata + karakter latihan nada · mode game dengan XP, nyawa &amp; lencana · disimpan otomatis di perangkatmu</p>
     </div>
   </footer>
 
 </div>
 
-<audio id="bgMusic" preload="none"></audio>
+<div class="levelup-modal" id="levelupModal" hidden>
+  <div class="levelup-card">
+    <div class="levelup-confetti" id="confettiHost"></div>
+    <h2 id="levelupTitle">Level Up!</h2>
+    <p id="levelupSub"></p>
+    <button type="button" class="btn master-btn" id="levelupCloseBtn">Lanjut!</button>
+  </div>
+</div>
+
+<div class="toast" id="heartsToast" hidden>
+  <p>Nyawa habis! Tarik napas sebentar, lalu lanjutkan lagi.</p>
+  <button type="button" class="btn btn-dark" id="refillHeartsBtn">Isi Ulang</button>
+</div>
+
+<div class="toast achievement-toast" id="achToast" hidden></div>
 
 <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3/dist/hanzi-writer.min.js"></script>
 <script src="app.js"></script>
